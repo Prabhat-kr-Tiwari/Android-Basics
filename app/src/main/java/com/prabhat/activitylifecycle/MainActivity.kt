@@ -1,9 +1,11 @@
 package com.prabhat.activitylifecycle
 
+import android.content.Context
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.viewModels
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
@@ -13,10 +15,23 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.prabhat.activitylifecycle.ui.theme.ActivityLifecycleTheme
 
+
+
+class MyClass(private val context: Context){
+
+}
 class MainActivity : ComponentActivity() {
+
+    private val viewModel by viewModels<MyViewModel>()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+        //context is a instance of class
+        //each context has a lifecycle
+//        val context:Context = this
+
+        viewModel.context = this
+
         setContent {
             ActivityLifecycleTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
