@@ -17,6 +17,7 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+       val drawbale =  resources.getDrawable(R.drawable.main_before,null)
         setContent {
             ActivityLifecycleTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
