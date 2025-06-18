@@ -1,5 +1,8 @@
 package com.prabhat.activitylifecycle
 
+import android.content.Intent
+import android.content.IntentFilter
+import android.os.Build
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -14,10 +17,18 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.prabhat.activitylifecycle.ui.theme.ActivityLifecycleTheme
 
 class MainActivity : ComponentActivity() {
+    private val airplaneModeBroadCastReceiver = AirplaneModeBroadCastReceiver()
+    private val testBroadCastReceiver = TestReceiver()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-       val drawbale =  resources.getDrawable(R.drawable.main_before,null)
+        registerReceiver(airplaneModeBroadCastReceiver, IntentFilter(Intent.ACTION_AIRPLANE_MODE_CHANGED))
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            registerReceiver(testBroadCastReceiver, IntentFilter("TEST_ACTION"),RECEIVER_EXPORTED)
+        }else{
+//            registerReceiver(testBroadCastReceiver, IntentFilter("TEST_ACTION"))
+
+        }
         setContent {
             ActivityLifecycleTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
@@ -28,6 +39,12 @@ class MainActivity : ComponentActivity() {
                 }
             }
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        unregisterReceiver(airplaneModeBroadCastReceiver)
+        unregisterReceiver(testBroadCastReceiver)
     }
 }
 
